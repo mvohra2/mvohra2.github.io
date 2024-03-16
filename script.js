@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('dreamForm').addEventListener('submit', function(event) {
         event.preventDefault(); 
+        handleFormSubmission();
+
+        currentGroupId++;
         
         addEmotion(); 
         addWho(); 
@@ -31,27 +34,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+var currentGroupId = 0;
+let currentDivId = 0; // Global counter for div IDs
+let currentLineId = 0; // Global counter for line IDs
 
 function createDiv(text, className) {
-    // Check for duplicates
-    var existingDivs = document.querySelectorAll('.' + className);
-    for (var i = 0; i < existingDivs.length; i++) {
-        if (existingDivs[i].textContent.trim() === text.trim()) {
-            console.log("Duplicate found for " + className + ": " + text + ". No new div created.");
-            return; // Exit the function if a duplicate is found
-        }
+    // Check for an existing div with the same text and className
+    var existingDiv = Array.from(document.querySelectorAll('.' + className))
+        .find(div => div.textContent.trim() === text.trim());
+
+    if (existingDiv) {
+        console.log("Existing " + className + " found for: " + text + ". No new div created.");
+        return existingDiv; // Return the existing div, no new div created
     }
 
-    // Proceed to create a new div if no duplicate is found
+    // If no existing div found, proceed to create a new one
     var div = document.createElement("div");
     div.textContent = text;
     div.className = "draggable " + className;
+    div.id = 'div' + currentDivId++; // Assign unique ID
     div.style.position = "absolute";
-    div.style.left = Math.random() * (window.innerWidth - 100) + 'px'; // Random initial position
+    div.style.left = Math.random() * (window.innerWidth - 100) + 'px';
     div.style.top = Math.random() * (window.innerHeight - 20) + 'px';
     document.body.appendChild(div);
     makeDraggable(div);
+
+    return div; // Return the newly created div
 }
+
 
 // as they now call createDiv, which includes the duplicate check.
 function addEmotion() {
@@ -79,56 +89,177 @@ function makeDraggable(elmnt) {
     elmnt.onmousedown = function(event) {
         event.preventDefault();
         
-        // Calculate the initial offset inside the element at the start of the drag
         var offsetX = event.clientX - elmnt.getBoundingClientRect().left;
         var offsetY = event.clientY - elmnt.getBoundingClientRect().top;
 
         function elementDrag(e) {
             e.preventDefault();
-            // Use the initial offset to set the new position, ensuring the cursor stays in the same relative position within the element
             elmnt.style.top = (e.clientY - offsetY) + "px";
             elmnt.style.left = (e.clientX - offsetX) + "px";
-            drawLine(); // Update line position as the element is dragged
-        }
-
-        function stopDragElement() {
-            document.removeEventListener('mousemove', elementDrag);
-            document.removeEventListener('mouseup', stopDragElement);
+            updateConnectedLines(elmnt.id); // Update lines connected to this div
         }
 
         document.addEventListener('mousemove', elementDrag);
-        document.addEventListener('mouseup', stopDragElement);
+        document.addEventListener('mouseup', function() {
+            document.removeEventListener('mousemove', elementDrag);
+        });
     };
+
+    elmnt.addEventListener('mouseenter', function() {
+        highlightConnections(elmnt, true); // Highlight on mouse enter
+    });
+    elmnt.addEventListener('mouseleave', function() {
+        highlightConnections(elmnt, false); // Remove highlight on mouse leave
+    });
 }
+
+function highlightConnections(div, highlight) {
+    // Toggle the hover effect on the div
+    if (highlight) {
+        div.classList.add('hover-effect');
+    } else {
+        div.classList.remove('hover-effect');
+    }
+
+    // Retrieve the IDs of lines connected to this div
+    let connectedLineIds = connections[div.id];
+    if (!connectedLineIds) return;
+
+    connectedLineIds.forEach(lineId => {
+        let line = document.getElementById(lineId);
+        if (highlight) {
+            line.style.stroke = 'red'; // Change line color
+        } else {
+            line.style.stroke = 'black'; // Reset line color (adjust as needed)
+        }
+
+        // Now, find and highlight connected divs
+        let fromId = line.getAttribute('data-from-id');
+        let toId = line.getAttribute('data-to-id');
+        [fromId, toId].forEach(id => {
+            if (id !== div.id) { // Avoid re-highlighting the initial div
+                let connectedDiv = document.getElementById(id);
+                if (highlight) {
+                    connectedDiv.classList.add('hover-effect');
+                } else {
+                    connectedDiv.classList.remove('hover-effect');
+                }
+            }
+        });
+    });
+}
+
+
+//DrawLine
+
+let connections = {}; // Example: { 'div1': ['line1', 'line2'], 'div2': ['line1'] }
 
 function drawLine() {
-    var emotionDiv = document.querySelector('.emotion');
-    var dreamDiv = document.querySelector('.dream');
-    var whoDiv = document.querySelector('.who');
+    // No need to remove all lines; this will draw lines only for the current group
 
-    if (emotionDiv && dreamDiv) {
-        var emotionRect = emotionDiv.getBoundingClientRect();
-        var dreamRect = dreamDiv.getBoundingClientRect();
-        var line = document.getElementById("exampleLine");
+    const currentGroupEmotionDivs = document.querySelectorAll('.emotion[data-group-id="' + currentGroupId + '"]');
+    const currentGroupDreamDivs = document.querySelectorAll('.dream[data-group-id="' + currentGroupId + '"]');
+    const currentGroupWhoDivs = document.querySelectorAll('.who[data-group-id="' + currentGroupId + '"]');
 
-        line.setAttribute("x1", emotionRect.left + emotionRect.width / 2 + window.scrollX);
-        line.setAttribute("y1", emotionRect.top + emotionRect.height / 2 + window.scrollY);
-        line.setAttribute("x2", dreamRect.left + dreamRect.width / 2 + window.scrollX);
-        line.setAttribute("y2", dreamRect.top + dreamRect.height / 2 + window.scrollY);
-    } 
-    
-    if (whoDiv && dreamDiv) {
-        var whoRect = whoDiv.getBoundingClientRect();
-        var line2 = document.getElementById("exampleLine2");
+    // Draw lines only within the current group
+    currentGroupEmotionDivs.forEach(emotionDiv => {
+        currentGroupDreamDivs.forEach(dreamDiv => {
+            createAndAppendLine(emotionDiv, dreamDiv, 'black');
+        });
+    });
 
-        line2.setAttribute("x1", whoRect.left + whoRect.width / 2 + window.scrollX);
-        line2.setAttribute("y1", whoRect.top + whoRect.height / 2 + window.scrollY);
-        line2.setAttribute("x2", dreamRect.left + dreamRect.width / 2 + window.scrollX);
-        line2.setAttribute("y2", dreamRect.top + dreamRect.height / 2 + window.scrollY);
-
-    }
-    
+    currentGroupWhoDivs.forEach(whoDiv => {
+        currentGroupDreamDivs.forEach(dreamDiv => {
+            createAndAppendLine(whoDiv, dreamDiv, 'black');
+        });
+    });
 }
+
+
+function createAndAppendLine(fromDiv, toDiv, color) {
+    var svgContainer = document.querySelector('.svg-container');
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.id = 'line' + currentLineId++; // Assign unique ID
+    line.classList.add('svg-line');
+    var fromRect = fromDiv.getBoundingClientRect();
+    var toRect = toDiv.getBoundingClientRect();
+
+    line.setAttribute('x1', fromRect.left + fromRect.width / 2 + window.scrollX);
+    line.setAttribute('y1', fromRect.top + fromRect.height / 2 + window.scrollY);
+    line.setAttribute('x2', toRect.left + toRect.width / 2 + window.scrollX);
+    line.setAttribute('y2', toRect.top + toRect.height / 2 + window.scrollY);
+    line.setAttribute('style', `stroke:${color};stroke-width:2`);
+
+    line.setAttribute('data-from-id', fromDiv.id);
+    line.setAttribute('data-to-id', toDiv.id);
+
+    svgContainer.appendChild(line);
+
+    // Record the connection
+    if (!connections[fromDiv.id]) connections[fromDiv.id] = [];
+    if (!connections[toDiv.id]) connections[toDiv.id] = [];
+    connections[fromDiv.id].push(line.id);
+    connections[toDiv.id].push(line.id);
+}
+
+function updateConnectedLines(divId) {
+    document.querySelectorAll(`line[data-from-id="${divId}"], line[data-to-id="${divId}"]`).forEach(line => {
+        let fromDiv = document.getElementById(line.getAttribute('data-from-id'));
+        let toDiv = document.getElementById(line.getAttribute('data-to-id'));
+
+        let fromRect = fromDiv.getBoundingClientRect();
+        let toRect = toDiv.getBoundingClientRect();
+
+        // Update line coordinates
+        line.setAttribute('x1', fromRect.left + fromRect.width / 2 + window.scrollX);
+        line.setAttribute('y1', fromRect.top + fromRect.height / 2 + window.scrollY);
+        line.setAttribute('x2', toRect.left + toRect.width / 2 + window.scrollX);
+        line.setAttribute('y2', toRect.top + toRect.height / 2 + window.scrollY);
+    });
+}
+
+function handleFormSubmission() {
+    // Retrieve input values
+    var emotionInput = document.getElementById("emotion").value.trim();
+    var whoInput = document.getElementById("who").value.trim();
+    var dreamInput = document.getElementById("dream").value.trim();
+
+    // Attempt to create or retrieve existing divs for each input
+    var emotionDiv = createDiv(emotionInput, 'emotion');
+    var whoDiv = createDiv(whoInput, 'who');
+    var dreamDiv = createDiv(dreamInput, 'dream');
+
+    // Assuming createDiv returns null if a div is not created (when a duplicate is found)
+    // and returns the existing div otherwise. Adjust this logic based on your actual implementation.
+    // The returned div could be new or existing, but it will always be the correct div to connect.
+
+    // Connect divs as necessary. This involves drawing lines between related divs.
+    // Since createDiv ensures no duplicates and returns the correct div,
+    // these connections will be correctly made to either new or existing divs.
+    
+    // Example connections (adjust based on your actual needs):
+    // Connect 'emotion' and 'dream'
+    if (emotionDiv && dreamDiv) {
+        createAndAppendLine(emotionDiv, dreamDiv, 'black');
+    }
+
+    // Connect 'who' and 'dream'
+    if (whoDiv && dreamDiv) {
+        createAndAppendLine(whoDiv, dreamDiv, 'black');
+    }
+
+    // Reset form fields after submission for a better user experience
+    document.getElementById("emotion").value = '';
+    document.getElementById("who").value = '';
+    document.getElementById("dream").value = '';
+
+    // Hide the form or reset visibility settings as necessary
+    // For example: document.getElementById('dreamForm').style.display = 'none';
+}
+
+
+//Visibility
+
 
 function toggleVisibility(className) {
     var divs = document.querySelectorAll('.' + className);
