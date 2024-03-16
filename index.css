@@ -28,6 +28,10 @@ button:hover {
   color: white;
 }
 
+.hover-effect {
+  background-color: red; /* Or any color you prefer */
+}
+
 .hidden {
   display: none;
 }
@@ -94,6 +98,10 @@ h1 {
     text-align: center;
 }
 
+.dream:hover{
+  background-color: red;
+}
+
 .who {
     padding: 10px;
     border-radius: 100%;
@@ -106,6 +114,10 @@ h1 {
     text-align: center;
 }
 
+.who:hover {
+  background-color: red;
+}
+
 .emotion {
     padding: 10px;
     border-radius: 100%;
@@ -116,6 +128,10 @@ h1 {
     font-family:'Courier New', Courier, monospace;
     font-size: 12px;
     text-align: center;
+}
+
+.emotion:hover {
+  background-color: red;
 }
 
 /* submission form */
