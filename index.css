@@ -1,0 +1,139 @@
+* {
+    margin: auto;
+    padding: 0;
+}
+
+.vignette {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* box-shadow: 0 0 200px rgba(225,0,0,0.5) inset; */
+}
+
+/* hide category buttons */
+button {
+  color: black;
+  font-family:'Courier New', Courier, monospace;
+  font-size: 15px;
+  border-radius: 2px;
+  outline-offset: 5px;
+  z-index: 5;
+}
+
+button:hover {
+  background-color: gray;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+body {
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 100vh;
+    margin: 10px;
+}
+
+h1 {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 12px;
+    align-items: justify;
+}
+
+/* lines */
+.svg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.svg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.svg-line {
+  stroke: black;
+  stroke-width: 2;
+  stroke-dasharray: 4,4;
+}
+
+.draggable {
+    position: absolute;
+    cursor: move;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+/* three divs */
+.dream {
+    padding: 10px;
+    border-radius: 100%;
+    cursor: move;
+    z-index: 10;
+    background-color: black;
+    color: #fff;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 12px;
+    text-align: center;
+}
+
+.who {
+    padding: 10px;
+    border-radius: 100%;
+    cursor: move;
+    z-index: 10;
+    background-color: black;
+    color: #fff;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 12px;
+    text-align: center;
+}
+
+.emotion {
+    padding: 10px;
+    border-radius: 100%;
+    cursor: move;
+    z-index: 10;
+    background-color: black;
+    color: #fff;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* submission form */
+  form {
+    align-self: left;
+    z-index: 3;
+    outline: 2px solid black;
+    outline-offset: 10px;
+  }
+
+  label {
+    display: block;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+  }
+  
+  input, label {
+    margin: 0.4rem 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+  }
