@@ -3,23 +3,33 @@
 <head>
     <title>Dreamscape</title>
     <link rel="stylesheet" href="index.css">
+    <link href="https://db.onlinewebfonts.com/c/d53e8c324d86f4bd809f2421498b1f1f?family=BlurWeb-Medium+W03+Regular" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/7e8601c112331686d7e3e6b525d0793b?family=BlurWeb-Light+W03+Regular" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/ef761cd94a04b2c86f5d63582461c0e3?family=BlurWeb-Bold+W03+Regular" rel="stylesheet">
+
+    <!-- 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Stylish&display=swap" rel="stylesheet">
+    -->
+    
 </head>
 <body>
 
-<button id="addDreamButton" type="button">Add a dream</button>
+<button id="addDreamButton" type="button">add a dream</button>
 <!-- <button id="hideDreams" type="button">Hide Dreams</button>
 <button id="hideEmotions" type="button">Hide Emotions</button>
 <button id="hideWho" type="button">Hide Who</button> -->
 
 <form id="dreamForm" style="display:none;">
-    <label for="emotion">What emotion did you experience in your dream?</label>
-    <input type="text" id="emotion" name="emotion" maxlength="8" size="10" /><br/>
+    <label for="dream">What happened in your dream?</label>
+    <input type="text" id="dream" name="dream" maxlength="15" size="10" /><br/>
 
     <label for="who">Who did you dream about?</label>
-    <input type="text" id="who" name="who" maxlength="8" size="10" /><br/>
+    <input type="text" id="who" name="who" maxlength="15" size="10" /><br/>
 
-    <label for="dream">What happened in your dream?</label>
-    <input type="text" id="dream" name="dream" maxlength="8" size="10" /><br/>
+    <label for="emotion">What emotion did you experience in your dream?</label>
+    <input type="text" id="emotion" name="emotion" maxlength="15" size="10" /><br/>
 
     <button type="submit">submit</button>
 </form>
