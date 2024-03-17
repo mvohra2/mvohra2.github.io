@@ -1,37 +1,23 @@
 
 //Hiding and showing the submit and add dream buttons
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('addDreamButton').addEventListener('click', function() {
-        document.getElementById('dreamForm').style.display = 'block';
-    });
+document.getElementById('addDreamButton').addEventListener('click', function() {
+    document.getElementById('dreamForm').style.display = 'block';
+    this.style.display = 'none'; // Hide the button
+});
 
-    document.getElementById('dreamForm').addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        handleFormSubmission();
+document.getElementById('dreamForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+    handleFormSubmission();
 
-        currentGroupId++;
-        
-        addEmotion(); 
-        addWho(); 
-        addDream();
-        drawLine(); 
-        
-        document.getElementById('dreamForm').style.display = 'none';
-    });
-
-    document.getElementById('hideWho').addEventListener('click', function(event) {
-        document.getElementById('who').style.display = 'hidden';
-    });
-
-    document.getElementById('hideEmotions').addEventListener('click', function(event) {
-        document.getElementById('emotion').style.display = 'hidden';
-    });
-
-    document.getElementById('hideDreams').addEventListener('click', function(event) {
-        document.getElementById('dream').style.display = 'hidden';
-    });
-
-
+    currentGroupId++;
+    
+    addEmotion(); 
+    addWho(); 
+    addDream();
+    drawLine(); 
+    
+    document.getElementById('dreamForm').style.display = 'none';
+    document.getElementById('addDreamButton').style.display = 'block'; // Show the button again
 });
 
 var currentGroupId = 0;
@@ -114,38 +100,40 @@ function makeDraggable(elmnt) {
 }
 
 function highlightConnections(div, highlight) {
-    // Toggle the hover effect on the div
+    // Toggle the hover effect on the div directly
     if (highlight) {
         div.classList.add('hover-effect');
     } else {
         div.classList.remove('hover-effect');
     }
 
-    // Retrieve the IDs of lines connected to this div
+    // Retrieve the IDs of lines connected to this div and highlight connected divs
     let connectedLineIds = connections[div.id];
     if (!connectedLineIds) return;
 
     connectedLineIds.forEach(lineId => {
         let line = document.getElementById(lineId);
-        if (highlight) {
-            line.style.stroke = 'red'; // Change line color
-        } else {
-            line.style.stroke = 'black'; // Reset line color (adjust as needed)
-        }
+        if (line) {
+            // Update the line's color
+            line.style.stroke = highlight ? 'black' : 'grey'; // Adjust as needed
+            line.style.opacity = highlight ? '80%' : '100%' ;
 
-        // Now, find and highlight connected divs
-        let fromId = line.getAttribute('data-from-id');
-        let toId = line.getAttribute('data-to-id');
-        [fromId, toId].forEach(id => {
-            if (id !== div.id) { // Avoid re-highlighting the initial div
-                let connectedDiv = document.getElementById(id);
-                if (highlight) {
-                    connectedDiv.classList.add('hover-effect');
-                } else {
-                    connectedDiv.classList.remove('hover-effect');
+            // Highlight connected divs
+            let fromId = line.getAttribute('data-from-id');
+            let toId = line.getAttribute('data-to-id');
+            [fromId, toId].forEach(id => {
+                if (id !== div.id) { // Avoid re-applying the effect to the initiating div
+                    let connectedDiv = document.getElementById(id);
+                    if (connectedDiv) { // Check if the connected div exists
+                        if (highlight) {
+                            connectedDiv.classList.add('hover-effect');
+                        } else {
+                            connectedDiv.classList.remove('hover-effect');
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 }
 
@@ -164,13 +152,13 @@ function drawLine() {
     // Draw lines only within the current group
     currentGroupEmotionDivs.forEach(emotionDiv => {
         currentGroupDreamDivs.forEach(dreamDiv => {
-            createAndAppendLine(emotionDiv, dreamDiv, 'black');
+            createAndAppendLine(emotionDiv, dreamDiv, 'grey');
         });
     });
 
     currentGroupWhoDivs.forEach(whoDiv => {
         currentGroupDreamDivs.forEach(dreamDiv => {
-            createAndAppendLine(whoDiv, dreamDiv, 'black');
+            createAndAppendLine(whoDiv, dreamDiv, 'grey');
         });
     });
 }
@@ -240,12 +228,12 @@ function handleFormSubmission() {
     // Example connections (adjust based on your actual needs):
     // Connect 'emotion' and 'dream'
     if (emotionDiv && dreamDiv) {
-        createAndAppendLine(emotionDiv, dreamDiv, 'black');
+        createAndAppendLine(emotionDiv, dreamDiv, 'grey');
     }
 
     // Connect 'who' and 'dream'
     if (whoDiv && dreamDiv) {
-        createAndAppendLine(whoDiv, dreamDiv, 'black');
+        createAndAppendLine(whoDiv, dreamDiv, 'grey');
     }
 
     // Reset form fields after submission for a better user experience
