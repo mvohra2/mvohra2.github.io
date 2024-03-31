@@ -42,12 +42,25 @@ function createDiv(text, className) {
     div.style.position = "absolute";
     div.style.left = Math.random() * (window.innerWidth - 100) + 'px';
     div.style.top = Math.random() * (window.innerHeight - 20) + 'px';
+
+    applyFloatingAnimation(div);
+    applyFadingEffect(div);
     document.body.appendChild(div);
     makeDraggable(div);
 
     return div; // Return the newly created div
 }
 
+function applyFadingEffect(div) {
+    div.style.animation += `, fadeToTenPercent 600s forwards`;
+}
+
+function applyFloatingAnimation(div) {
+    const animationDuration = Math.random() * 5 + 3;
+
+    // Apply the animation style directly to the div
+    div.style.animation = `floatAnimation ${animationDuration}s ease-in-out infinite alternate`;
+}
 
 // as they now call createDiv, which includes the duplicate check.
 function addEmotion() {
@@ -115,7 +128,7 @@ function highlightConnections(div, highlight) {
         let line = document.getElementById(lineId);
         if (line) {
             // Update the line's color
-            line.style.stroke = highlight ? 'black' : 'grey'; // Adjust as needed
+            line.style.stroke = highlight ? 'black' : 'rgb(220,220,220)'; // Adjust as needed
             line.style.opacity = highlight ? '80%' : '100%' ;
 
             // Highlight connected divs
@@ -152,13 +165,13 @@ function drawLine() {
     // Draw lines only within the current group
     currentGroupEmotionDivs.forEach(emotionDiv => {
         currentGroupDreamDivs.forEach(dreamDiv => {
-            createAndAppendLine(emotionDiv, dreamDiv, 'grey');
+            createAndAppendLine(emotionDiv, dreamDiv, 'rgb(220,220,220)');
         });
     });
 
     currentGroupWhoDivs.forEach(whoDiv => {
         currentGroupDreamDivs.forEach(dreamDiv => {
-            createAndAppendLine(whoDiv, dreamDiv, 'grey');
+            createAndAppendLine(whoDiv, dreamDiv, 'rgb(220,220,220)');
         });
     });
 }
@@ -217,10 +230,6 @@ function handleFormSubmission() {
     var whoDiv = createDiv(whoInput, 'who');
     var dreamDiv = createDiv(dreamInput, 'dream');
 
-    // Assuming createDiv returns null if a div is not created (when a duplicate is found)
-    // and returns the existing div otherwise. Adjust this logic based on your actual implementation.
-    // The returned div could be new or existing, but it will always be the correct div to connect.
-
     // Connect divs as necessary. This involves drawing lines between related divs.
     // Since createDiv ensures no duplicates and returns the correct div,
     // these connections will be correctly made to either new or existing divs.
@@ -228,12 +237,12 @@ function handleFormSubmission() {
     // Example connections (adjust based on your actual needs):
     // Connect 'emotion' and 'dream'
     if (emotionDiv && dreamDiv) {
-        createAndAppendLine(emotionDiv, dreamDiv, 'grey');
+        createAndAppendLine(emotionDiv, dreamDiv, 'rgb(220,220,220)');
     }
 
     // Connect 'who' and 'dream'
     if (whoDiv && dreamDiv) {
-        createAndAppendLine(whoDiv, dreamDiv, 'grey');
+        createAndAppendLine(whoDiv, dreamDiv, 'rgb(220,220,220)');
     }
 
     // Reset form fields after submission for a better user experience
@@ -275,5 +284,8 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleVisibility('dream');
     });
 });
+
+
+//Animating divs
 
 
