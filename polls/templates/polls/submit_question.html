@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Question</title>
+    <link rel="stylesheet" href="{% static 'polls/stylesheet.css' %}">
+    <link rel="stylesheet" href="https://use.typekit.net/ycn5xxv.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <div class="container">
+        <form id="dreamForm" method="post">
+            <h1>Record a dream</h1>
+            {% csrf_token %}
+            <label for="question_text">Your name:</label>
+            <input type="text" name="question_text" id="question_text" required><br>
+            <label for="choice_text">Your dream:</label>
+            <input type="text" name="response_text" id="response_text" required><br>
+            <button type="submit">submit</button>
+        </form>
+    </div>
+    <script src="{% static 'polls/js/script.js' %}"></script>
+</body>
+</html>
