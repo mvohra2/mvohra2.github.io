@@ -32,9 +32,9 @@ def submit_question(request):
 
             return redirect('polls:index')
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+
+def groups_view(request):
+    return render(request, 'polls/groups.html')
 
 from collections import defaultdict
 

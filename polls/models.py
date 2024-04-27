@@ -10,3 +10,8 @@ class Question(models.Model):
     actions = models.JSONField(default=list, blank=True)
     emotions = models.JSONField(default=list, blank=True)
     people = models.JSONField(default=list, blank=True)
+
+class QuestionManager(models.Manager):
+    def get_questions_by_action(self, action):
+        return self.get_queryset().filter(actions__contains=action)
+

@@ -26,25 +26,19 @@ document.addEventListener("DOMContentLoaded", function() {
     
     responseDivs.forEach(function(responseDiv) {
         // Positioning and animations for .question-text within each .response div
-        const questionDiv = responseDiv.querySelector('.question-text');
-        if (questionDiv) {
-            questionDiv.style.position = "absolute";
-            questionDiv.style.left = Math.random() * (window.innerWidth - questionDiv.offsetWidth) + 'px';
-            questionDiv.style.top = Math.random() * (window.innerHeight - questionDiv.offsetHeight) + 'px';
+        const questionNameDiv = responseDiv.querySelector('.question-text');
+        if (questionNameDiv) {
+            questionNameDiv.style.position = "absolute";
+            questionNameDiv.style.left = Math.random() * (window.innerWidth - questionNameDiv.offsetWidth) + 'px';
+            questionNameDiv.style.top = Math.random() * (window.innerHeight - questionNameDiv.offsetHeight) + 'px';
 
-            makeDraggable(questionDiv);
-            applyFloatingAnimation(questionDiv);
+            makeDraggable(questionNameDiv);
+            applyFloatingAnimation(questionNameDiv);
         }
 
         // Base coordinates for positioning other elements relative to .question-text
-        const questionCenterX = questionDiv ? questionDiv.offsetLeft + questionDiv.offsetWidth / 2 : 0;
-        const questionCenterY = questionDiv ? questionDiv.offsetTop + questionDiv.offsetHeight / 2 : 0;
-
-        // Position and animate the .response-text relative to .question-text
-        const responseTextDiv = responseDiv.querySelector('.response-text');
-        if (responseTextDiv) {
-            positionRelatedDiv(responseTextDiv, questionCenterX, questionCenterY, 200); // radius fixed at 70
-        }
+        const questionCenterX = questionNameDiv ? questionNameDiv.offsetLeft + questionNameDiv.offsetWidth / 2 : 0;
+        const questionCenterY = questionNameDiv ? questionNameDiv.offsetTop + questionNameDiv.offsetHeight / 2 : 0;
 
         // Positioning for .emotion-item, .person-item, .action-item
         responseDiv.querySelectorAll('.emotion-item, .person-item, .action-item').forEach(function(div) {
@@ -214,41 +208,102 @@ document.getElementById('modalOverlay').addEventListener('click', function(event
     }
 });
 
+//Make connections utils
+
+function hideElement(elementId) {
+    var element = document.getElementById(elementId);
+    if (element) {
+        element.style.display = 'none';
+    }
+}
+
 //Drawing Lines
 
 let currentLineId = 0; // Initialize line ID counter
 let connections = {}; // To keep track of connections, if needed
 
-function drawLinesBetweenQuestionsAndResponses() {
+function makeConnections() {
     const svgContainer = document.querySelector('.svg-container');
     const questionTextDivs = document.querySelectorAll('.question-text');
 
-    questionTextDivs.forEach(questionDiv => {
-        const entryId = questionDiv.getAttribute('data-entry-id');
-        
-        // Existing functionality to draw line to response-text
-        const responseDiv = document.querySelector(`.response-text[data-entry-id="${entryId}"]`);
-        if (responseDiv) {
-            createAndAppendLine(questionDiv, responseDiv, 'white', svgContainer);
-        }
+    let actionsSet = new Set();
+    let emotionsSet = new Set();
+    let peopleSet = new Set();
+
+    let actionsMap = {};
+    let emotionsMap = {};
+    let peopleMap = {};
+
+    questionTextDivs.forEach(questionNameDiv => {
+        const entryId = questionNameDiv.getAttribute('data-entry-id');
 
         // New functionality to draw lines to each action-item under the same question
         const actionItems = document.querySelectorAll(`.action-item[data-entry-id="${entryId}"]`);
         actionItems.forEach(actionDiv => {
-            createAndAppendLine(questionDiv, actionDiv, 'white', svgContainer);
+            const actionName = actionDiv.textContent.trim();
+            if (actionsSet.has(actionName)) {
+                // actionDiv.style.display = 'none';
+                actionDiv.style.display = actionDiv.style.display === 'none' ? 'block' : 'none';
+            } else {
+                actionsSet.add(actionName);
+                actionsMap[actionName] = actionDiv;
+            }
+
         });
 
         const peopleItems = document.querySelectorAll(`.person-item[data-entry-id="${entryId}"]`);
         peopleItems.forEach(personDiv => {
-            createAndAppendLine(questionDiv, personDiv, 'white', svgContainer);
+            const personName = personDiv.textContent.trim();
+            if (peopleSet.has(personName)) {
+                // personDiv.style.display = 'none';
+                personDiv.style.display = personDiv.style.display === 'none' ? 'block' : 'none';
+            } else {
+                peopleSet.add(personName);
+                peopleMap[personName] = personDiv;
+            }
         });
 
         const emotionItems = document.querySelectorAll(`.emotion-item[data-entry-id="${entryId}"]`);
         emotionItems.forEach(emotionDiv => {
-            createAndAppendLine(questionDiv, emotionDiv, 'white', svgContainer);
+            const emotionName = emotionDiv.textContent.trim();
+            if (emotionsSet.has(emotionName)) {
+                // emotionDiv.style.display = 'none';
+                 emotionDiv.style.display = emotionDiv.style.display === 'none' ? 'block' : 'none';
+            } else {
+                emotionsSet.add(emotionName);
+                emotionsMap[emotionName] = emotionDiv;
+            }
         });
 
     });
+
+        questionTextDivs.forEach(questionNameDiv => {
+            const entryId = questionNameDiv.getAttribute('data-entry-id');
+
+            // New functionality to draw lines to each action-item under the same question
+            const actionItems = document.querySelectorAll(`.action-item[data-entry-id="${entryId}"]`);
+            actionItems.forEach(actionDiv => {
+                const actionName = actionDiv.textContent.trim();
+                const uniqueActionDiv = actionsMap[actionName]
+                createAndAppendLine(questionNameDiv, uniqueActionDiv, 'white', svgContainer);
+            });
+
+            const peopleItems = document.querySelectorAll(`.person-item[data-entry-id="${entryId}"]`);
+            peopleItems.forEach(personDiv => {
+                const personName = personDiv.textContent.trim();
+                const uniquePersonDiv = peopleMap[personName]
+                createAndAppendLine(questionNameDiv, uniquePersonDiv, 'white', svgContainer);
+            });
+
+            const emotionItems = document.querySelectorAll(`.emotion-item[data-entry-id="${entryId}"]`);
+            emotionItems.forEach(emotionDiv => {
+                const emotionName = emotionDiv.textContent.trim();
+                const uniqueEmotionDiv = emotionsMap[emotionName]
+                createAndAppendLine(questionNameDiv, uniqueEmotionDiv, 'white', svgContainer);
+            });
+
+        });
+        //
 }
 
 let lineCounter = 0;
@@ -291,10 +346,6 @@ function updateLinePositions(div) {
     }
 }
 
-window.addEventListener('load', function() {
-    drawLinesBetweenQuestionsAndResponses();
-});
-
 // Toggle lines on and off
 
 function toggleLinesVisibility() {
@@ -320,6 +371,7 @@ function toggleLinesVisibility() {
     }
 }
 
+document.getElementById('removeLines').addEventListener('click', makeConnections);
 document.getElementById('removeLines').addEventListener('click', toggleLinesVisibility);
 
 // Time travel slider

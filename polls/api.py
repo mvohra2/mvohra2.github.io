@@ -1,10 +1,12 @@
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
 
 from .models import Question  # Assuming you have a Django model to store this data
 
 def process_response_text(response_text):
-    
+
+    load_dotenv("app.env")
     api_key = os.getenv("OPENAI_API_KEY")
     
     client = OpenAI(api_key=api_key)
@@ -54,40 +56,3 @@ Format your response like [] [] []. Do not repeat words. Do not include 'I'"
         return actions, people, emotions
     
     return [], [], []
-
-
-# def process_response_text(response_text, question_id):
-    
-#     # openai.api_key = settings.OPENAI_API_KEY
-#     try:
-#         response = openai.ChatCompletion.create(
-#             model="gpt-4",
-#             messages=[
-#                 {"role": "system", "content": "Extract the main verbs, people mentioned, and emotions from the given text."},
-#                 {"role": "user", "content": response_text}
-#             ],
-#             max_tokens=150
-#         )
-        
-#         if 'choices' in response and response['choices']:
-#             messages = response['choices'][0].get('messages', [])
-#             if messages and messages[-1]['role'] == 'assistant':
-#                 output_text = messages[-1]['content']
-#                 lines = output_text.split('\n')
-#                 actions = lines[0].split(': ')[1].strip('[]').replace("'", "").split(', ')
-#                 people = lines[1].split(': ')[1].strip('[]').replace("'", "").split(', ')
-#                 emotions = lines[2].split(': ')[1].strip('[]').replace("'", "").split(', ')
-                
-#                 # Assuming you have a Django model instance to update
-#                 question = Question.objects.get(id=question_id)
-#                 question.actions = actions
-#                 question.people = people
-#                 question.emotions = emotions
-#                 question.save()
-
-#                 return actions, people, emotions
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         # Handle or log the error appropriately
-
-#     return ['chased'], ['scared'], []
