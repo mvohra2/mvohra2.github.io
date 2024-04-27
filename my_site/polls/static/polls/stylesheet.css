@@ -1,0 +1,361 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  }
+
+.container {
+  width: 25%;
+  padding: 20px;
+}
+
+.svg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.svg-line {
+  stroke: white;
+  stroke-width: 1.5;
+  stroke-dasharray: 4,4;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+form {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  background-color: black;
+  font-family: "lores-21-serif", sans-serif;
+  text-align: left; 
+  margin: 20px;
+  display: inline-block;
+  width: 25vw;
+}
+
+a:visited {
+  color: white;
+}
+
+a:hover {
+  color: red;
+}
+
+.question-text, .response-text {
+  text-transform: uppercase;
+  display: inline-block;
+  cursor: move;
+  z-index: 5;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  border: none;
+}
+
+.question-text:hover {
+  outline: 1px dashed red;
+  outline-offset: 5px;
+  scale: 1.2;
+  color: red;
+  /* filter: blur(1px); */
+}
+
+.response-text:hover {
+  outline: 1px dashed blue;
+  outline-offset: 5px;
+  background-color: transparent;
+  color: blue;
+  scale: 1.2;
+}
+
+.actions, .action-item, .emotions, .emotion-item, .people, .person-item {
+  text-transform: uppercase;
+  display: inline-block;
+  cursor: move;
+  z-index: 5;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  border: none;
+}
+
+.action-item:hover, .emotion-item:hover, .person-item:hover {
+  outline: 1px dashed yellow;
+  outline-offset: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  color: yellow;
+  scale: 1.2;
+}
+
+@keyframes floatAnimation {
+  0% {
+      transform: translateX(0px) translateY(0px) scale(1.02);
+  }
+  50% {
+      transform: translateX(0px) translateY(-5px) scale(1);
+  }
+  100% {
+      transform: translateX(-5px) translateY(0px) scale(1.05);
+  }
+}
+
+#nyClock {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-family: "lores-21-serif", sans-serif;
+  text-align: center; 
+  margin: 20px; 
+  display: inline-block; 
+  width: auto; 
+  bottom: 0;
+  left: 0;
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  z-index: 20;
+  position: fixed;
+}
+
+#questionCount {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-family: "lores-21-serif", sans-serif;
+  text-align: center; 
+  margin: 20px; 
+  display: inline-block; 
+  width: auto;
+  bottom: 0;
+  right: 0;
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  z-index: 20;
+  position: fixed;
+}
+
+#infoBox {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  text-align: left;
+  margin: 20px;
+  display: inline-block;
+  max-width: 20vw;
+  top: 0;
+  right: 0;
+  line-height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  z-index: 20;
+  overflow-wrap: break-word;
+  white-space: normal; 
+  position: fixed;
+}
+
+#removeLines {
+  cursor: pointer;
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  text-align: left; 
+  margin: 20px; 
+  display: inline-block; 
+  width: auto; 
+  position: fixed;
+  bottom: 0;
+  line-height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(2,5px);
+  backdrop-filter: blur(2.5px);
+  z-index: 20;
+}
+
+#removeLines:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  display: none;
+  z-index: 100;
+}
+
+.modal {
+  position: fixed;
+  z-index: 101;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 500px;
+}
+
+textarea {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: "lores-21-serif", sans-serif;
+  resize: vertical; 
+  background-color: black;
+  color: white; /* Text color */
+  font-size: 12px;
+}
+
+#openModal {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-family: "lores-21-serif", sans-serif;
+  text-align: left; 
+  margin: 20px; 
+  display: inline-block; 
+  width: auto; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  line-height: 20px;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  z-index: 25;
+}
+
+#openModal:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+#timeTravel {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  text-align: center; 
+  margin: 20px; 
+  display: inline-block; 
+  width: auto; 
+  position: fixed;
+  top: 0;
+  line-height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  z-index: 20;
+}
+
+#timeSlider {
+  width: 90%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+label {
+  color: white;
+  background-color: transparent;
+  border: none;
+  margin: 0.4rem 0;
+  display: block;
+  font-family: "lores-21-serif", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: "lores-21-serif", sans-serif;
+  resize: vertical; 
+  background-color: black;
+  color: white; /* Text color */
+  font-size: 12px;
+}
+
+#submit {
+  font-size: 15px;
+  padding: 10px;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: white;
+  font-family: "lores-21-serif", sans-serif;
+  text-align: center;
+  display: inline-block; 
+  width: auto; 
+  line-height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  z-index: 20;
+}
+
+#submit:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15);
+}
