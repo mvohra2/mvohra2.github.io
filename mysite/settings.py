@@ -18,7 +18,6 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-ALLOWED_HOSTS = ['dreamscape-e38e9f97fbfc.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 MIDDLEWARE = [
