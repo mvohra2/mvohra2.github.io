@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record a Dream</title>
+    <link rel="stylesheet" href="{% static 'polls/stylesheet.css' %}">
+    <link rel="stylesheet" href="https://use.typekit.net/ycn5xxv.css">
+</head>
+
+<body>
+
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div id="modal" class="modal">
+        <form id="dreamForm" method="post" action="{% url 'polls:submit_question' %}" autocomplete="off">
+            {% csrf_token %}
+            <h1>Record a dream</h1>
+            <label for="question_text">Your name:</label>
+            <input type="text" name="question_text" id="question_text" required><br>
+            <label for="response_text">Your dream:</label>
+            <textarea name="response_text" id="response_text" required rows="3" style="width: 100%;"></textarea><br>
+            <button id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+    </div>
+
+    <div class="fixedLayer">
+        <!-- <div id="timeTravel"> 
+        <label for="timeSlider">Time Travel</label>
+        <input type="range" id="timeSlider" name="timeSlider" min="0" max="4" value="0">
+        <div id="sliderValue">Today</div> -->
+        </div>
+
+        <button id="removeLines">Find Connections</button>
+        <button id="openModal">Record a Dream</button>
+        <div id="infoBox">Data set</div>
+        <div id="questionCount">Dream Count: 0</div>
+        <div id="nyClock">Loading current time...</div>
+    </div>
+
+    {% if latest_question_list %}
+        {% for question in latest_question_list %}
+        <div class="response" data-entry-id="{{ question.id }}" data-creation-date="{{ question.pub_date|date:'Y-m-d H:i' }}">
+            <div class="question-text" data-entry-id="{{ question.id }}" data-response-text="{{ question.response_text }}">{{ question.question_text }}
+
+            </div>
+
+                <!-- Link question texts to their actions, now only referencing unique actions -->
+                <div class="actions">
+                    {% for action in question.actions %}
+                        <div class="action-item" data-entry-id="{{ question.id }}">{{ action }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Displaying Emotions as separate divs -->
+                <div class="emotions">
+                    {% for emotion in question.emotions %}
+                        <div class="emotion-item" data-entry-id="{{ question.id }}">{{ emotion }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Displaying People as separate divs -->
+                <div class="people">
+                    {% for person in question.people %}
+                        <div class="person-item" data-entry-id="{{ question.id }}">{{ person }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}   
+        </div>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+
+<svg class="svg-container"> 
+</svg>
+
+<script src="{% static 'polls/js/script.js' %}"> </script>
+    
+</body>
