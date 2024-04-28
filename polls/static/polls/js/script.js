@@ -390,16 +390,28 @@ document.addEventListener('DOMContentLoaded', function() {
         responses.forEach(response => {
             const pubDateString = response.getAttribute('data-creation-date');
             const pubDate = new Date(pubDateString.replace(' ', 'T'));
-            const ageInDays = (today - pubDate) / (1000 * 60 * 60 * 24);
+            console.log("hello")
+            console.log(pubDateString)
+            console.log(pubDate)
+            const ageInDays = Math.ceil((today - pubDate) / (1000 * 60 * 60 * 24));
+            console.log(ageInDays)
             
-            if (pubDate > targetDate) {
-                response.style.display = 'none'; // This div did not exist at the target date
+            if (pubDate <= targetDate) {
+
+                console.log("display none")
+                console.log(response)
+                response.style.display = 'block'; // This div did not exist at the target date
             } else {
-                response.style.display = ''; // Make div visible
-                const opacity = calculateOpacity(Math.floor(ageInDays - daysAgo));
-                response.querySelectorAll('.question-text, .action-item, .person-item, .emotion-item').forEach(el => {
-                    el.style.opacity = opacity;
-                });
+                console.log("display block")
+                console.log(response)
+                response.style.display = 'none';
+                console.log(response)// Make div visible
+                // const opacity = calculateOpacity(Math.floor(ageInDays - daysAgo));
+                // console.log(opacity)
+                // response.querySelectorAll('.question-text, .action-item, .person-item, .emotion-item').forEach(el => {
+                //     // el.style.opacity = opacity;
+                //     el.style.display = 'block';
+                // });
             }
         });
     };

@@ -26,10 +26,10 @@
     </div>
 
     <div class="fixedLayer">
-        <!-- <div id="timeTravel"> 
+        <div id="timeTravel">
         <label for="timeSlider">Time Travel</label>
         <input type="range" id="timeSlider" name="timeSlider" min="0" max="4" value="0">
-        <div id="sliderValue">Today</div> -->
+        <div id="sliderValue">Today</div>
         </div>
 
         <button id="removeLines">Find Connections</button>
@@ -41,33 +41,33 @@
 
     {% if latest_question_list %}
         {% for question in latest_question_list %}
-        <div class="response" data-entry-id="{{ question.id }}" data-creation-date="{{ question.pub_date|date:'Y-m-d H:i' }}">
-            <div class="question-text" data-entry-id="{{ question.id }}" data-response-text="{{ question.response_text }}">{{ question.question_text }}
-
+            <div class="response" data-entry-id="{{ question.id }}" data-creation-date="{{ question.pub_date|date:'Y-m-d H:i' }}">
+                <div 
+                        class="question-text" data-entry-id="{{ question.id }}" data-response-text="{{ question.response_text }}">{{ question.question_text }}
+                </div>
+    
+                    <!-- Link question texts to their actions, now only referencing unique actions -->
+                    <div class="actions">
+                        {% for action in question.actions %}
+                            <div class="action-item" data-entry-id="{{ question.id }}">{{ action }}</div>
+                        {% endfor %}
+                    </div>
+    
+                    <!-- Displaying Emotions as separate divs -->
+                    <div class="emotions">
+                        {% for emotion in question.emotions %}
+                            <div class="emotion-item" data-entry-id="{{ question.id }}">{{ emotion }}</div>
+                        {% endfor %}
+                    </div>
+    
+                    <!-- Displaying People as separate divs -->
+                    <div class="people">
+                        {% for person in question.people %}
+                            <div class="person-item" data-entry-id="{{ question.id }}">{{ person }}</div>
+                        {% endfor %}
+                    </div>
             </div>
-
-                <!-- Link question texts to their actions, now only referencing unique actions -->
-                <div class="actions">
-                    {% for action in question.actions %}
-                        <div class="action-item" data-entry-id="{{ question.id }}">{{ action }}</div>
-                    {% endfor %}
-                </div>
-
-                <!-- Displaying Emotions as separate divs -->
-                <div class="emotions">
-                    {% for emotion in question.emotions %}
-                        <div class="emotion-item" data-entry-id="{{ question.id }}">{{ emotion }}</div>
-                    {% endfor %}
-                </div>
-
-                <!-- Displaying People as separate divs -->
-                <div class="people">
-                    {% for person in question.people %}
-                        <div class="person-item" data-entry-id="{{ question.id }}">{{ person }}</div>
-                    {% endfor %}
-                </div>
-            {% endfor %}   
-        </div>
+        {% endfor %}
     {% else %}
         <p>No polls are available.</p>
     {% endif %}
