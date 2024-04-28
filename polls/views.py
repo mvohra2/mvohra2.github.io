@@ -26,15 +26,9 @@ def submit_question(request):
                 emotions=emotions,
                 pub_date=timezone.now()
             )
-            for action in actions:
-                if not(action_list.__contains__(action)):
-                    action_list.append(action)
 
             return redirect('polls:index')
 
-
-def groups_view(request):
-    return render(request, 'polls/groups.html')
 
 from collections import defaultdict
 
@@ -42,8 +36,7 @@ def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')
 
     context = {
-        'latest_question_list': latest_question_list,
-        'action_list': action_list,
+        'latest_question_list': latest_question_list
     }
     return render(request, 'polls/index.html', context)
 
