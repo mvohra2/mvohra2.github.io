@@ -69,7 +69,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "hello",
+    "polls.apps.PollsConfig",
+    "django.contrib.admin",
 ]
 
 MIDDLEWARE = [
@@ -87,8 +88,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "gettingstarted.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -105,7 +104,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "gettingstarted.wsgi.application"
+WSGI_APPLICATION = "mysite.wsgi.application"
 
 
 # Database
@@ -171,6 +170,8 @@ USE_TZ = True
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
+
+ROOT_URLCONF = 'mysite.urls'
 
 STORAGES = {
     # Enable WhiteNoise's GZip and Brotli compression of static assets:
