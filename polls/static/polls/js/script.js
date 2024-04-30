@@ -390,11 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
         responses.forEach(response => {
             const pubDateString = response.getAttribute('data-creation-date');
             const pubDate = new Date(pubDateString.replace(' ', 'T'));
-            console.log("hello")
-            console.log(pubDateString)
-            console.log(pubDate)
             const ageInDays = Math.ceil((today - pubDate) / (1000 * 60 * 60 * 24));
-            console.log(ageInDays)
             
             if (pubDate <= targetDate) {
 
@@ -402,8 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(response)
                 response.style.display = 'block'; // This div did not exist at the target date
             } else {
-                console.log("display block")
-                console.log(response)
                 response.style.display = 'none';
                 console.log(response)// Make div visible
                 // const opacity = calculateOpacity(Math.floor(ageInDays - daysAgo));
