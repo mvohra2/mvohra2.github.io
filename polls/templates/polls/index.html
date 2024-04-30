@@ -26,11 +26,11 @@
     </div>
 
     <div class="fixedLayer">
-        <!-- <div id="timeTravel">
+        <div id="timeTravel">
         <label for="timeSlider">Time Travel</label>
         <input type="range" id="timeSlider" name="timeSlider" min="0" max="4" value="0">
         <div id="sliderValue">Today</div>
-        </div> -->
+        </div>
 
         <button id="removeLines">Find Connections</button>
         <button id="openModal">Record a Dream</button>
@@ -39,6 +39,7 @@
         <div id="nyClock">Loading current time...</div>
     </div>
 
+    <div id="content">
     {% if latest_question_list %}
         {% for question in latest_question_list %}
             <div class="response" data-entry-id="{{ question.id }}" data-creation-date="{{ question.pub_date|date:'Y-m-d H:i' }}">
@@ -71,6 +72,7 @@
     {% else %}
         <p>No polls are available.</p>
     {% endif %}
+</div>
 
 <svg class="svg-container"> 
 </svg>

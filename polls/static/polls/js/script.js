@@ -17,7 +17,7 @@ function updateClock() {
     document.getElementById('nyClock').innerText = `${nyTime}`;
 }
  
-setInterval(updateClock, 1000); 
+setInterval(updateClock, 1000);
 
 document.addEventListener("DOMContentLoaded", function() {
     updateClock();
@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const questionNameDiv = responseDiv.querySelector('.question-text');
         if (questionNameDiv) {
             questionNameDiv.style.position = "absolute";
-            questionNameDiv.style.left = Math.random() * (window.innerWidth - questionNameDiv.offsetWidth) + 'px';
-            questionNameDiv.style.top = Math.random() * (window.innerHeight - questionNameDiv.offsetHeight) + 'px';
+            questionNameDiv.style.left = Math.random() * (window.innerWidth*4 - questionNameDiv.offsetWidth) + 'px';
+            questionNameDiv.style.top = Math.random() * (window.innerHeight*4 - questionNameDiv.offsetHeight) + 'px';
 
             makeDraggable(questionNameDiv);
             applyFloatingAnimation(questionNameDiv);
@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const divY = centerY + radius * Math.sin(angle) - div.offsetHeight / 2;
 
         div.style.position = "absolute";
-        div.style.left = Math.max(0, Math.min(window.innerWidth - div.offsetWidth, divX)) + 'px';
-        div.style.top = Math.max(0, Math.min(window.innerHeight - div.offsetHeight, divY)) + 'px';
+        div.style.left = Math.max(0, Math.min(window.innerWidth*4 - div.offsetWidth, divX)) + 'px';
+        div.style.top = Math.max(0, Math.min(window.innerHeight*4 - div.offsetHeight, divY)) + 'px';
 
         makeDraggable(div);
         applyFloatingAnimation(div);
@@ -365,7 +365,7 @@ function toggleLinesVisibility() {
         // Set display to 'block' before starting the fade-in to ensure it's visible
         svgContainer.style.display = 'block';
         setTimeout(() => {
-            allLines.forEach(line => line.style.opacity = 0.6); // Ensure this matches your desired opacity level
+            allLines.forEach(line => line.style.opacity = 0.4); // Ensure this matches your desired opacity level
             button.textContent = 'Hide Connections';  // Update the button text to 'Hide Connections'
         }, 10); // Small delay to ensure display change has taken effect
     }

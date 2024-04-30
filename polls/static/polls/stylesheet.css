@@ -12,6 +12,11 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  height: 100vh; /* Adjust the height as needed */
+    background-image: 
+        linear-gradient(to right, gray 1px, transparent 1px),
+        linear-gradient(to bottom, gray 1px, transparent 1px);
+    background-size: 50px 50px; /* Adjust the size of the grid cells */
 }
 
 #background {
@@ -41,7 +46,6 @@ body {
   stroke: white;
   stroke-width: 1.5;
   stroke-dasharray: 4,4;
-  opacity: 0;
   transition: opacity 1.5s ease-in-out;
 }
 
@@ -67,19 +71,19 @@ a:hover {
   color: red;
 }
 
-.question-text, .response-text {
+.question-text {
   text-transform: uppercase;
   display: inline-block;
   cursor: move;
   z-index: 5;
-  color: white;
+  color: red;
   font-family: "lores-21-serif", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.2);
-  margin: 5px;
+  background-color: black;
+  margin: 10px;
   border: none;
 }
 
@@ -110,7 +114,7 @@ a:hover {
   font-style: normal;
   font-size: 12px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: black;
   margin: 5px;
   border: none;
 }
