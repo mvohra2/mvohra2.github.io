@@ -110,8 +110,8 @@ function makeDraggable(element) {
             updateLinePositions(element);
 
             // Ensure the position does not exceed the viewport
-            element.style.left = Math.max(0, Math.min(window.innerWidth - element.offsetWidth, newPosLeft)) + 'px';
-            element.style.top = Math.max(0, Math.min(window.innerHeight - element.offsetHeight, newPosTop)) + 'px';
+            element.style.left = Math.max(0, Math.min(window.innerWidth*4 - element.offsetWidth, newPosLeft)) + 'px';
+            element.style.top = Math.max(0, Math.min(window.innerHeight*4 - element.offsetHeight, newPosTop)) + 'px';
         }
 
         document.addEventListener('mousemove', elementDrag);
@@ -422,3 +422,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+
+document.addEventListener('mousemove', function(e) {
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    let rightEdge = windowWidth * 0.9;
+    let leftEdge = windowWidth * 0.1;
+    let bottomEdge = windowHeight * 0.9;
+    let topEdge = windowHeight * 0.1;
+
+    // Horizontal movement
+    if (e.clientX > rightEdge) {
+        document.documentElement.scrollLeft += 10;
+        document.body.style.cursor = 'e-resize';
+    } else if (e.clientX < leftEdge) {
+        document.documentElement.scrollLeft -= 10;
+        document.body.style.cursor = 'w-resize';
+    }
+
+    // Vertical movement
+    if (e.clientY > bottomEdge) {
+        document.documentElement.scrollTop += 10;
+        document.body.style.cursor = 's-resize';
+    } else if (e.clientY < topEdge) {
+        document.documentElement.scrollTop -= 10;
+        document.body.style.cursor = 'n-resize';
+    }
+
+    // Reset cursor if not near edges
+    if (e.clientX >= leftEdge && e.clientX <= rightEdge && e.clientY >= topEdge && e.clientY <= bottomEdge) {
+        document.body.style.cursor = 'default';
+    }
+});
+
+
+

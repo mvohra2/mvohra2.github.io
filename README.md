@@ -15,3 +15,5 @@ git push
 git add . 
 git commit -m "insert commit message"
 git push heroku main
+
+pip install -r requirements.txt

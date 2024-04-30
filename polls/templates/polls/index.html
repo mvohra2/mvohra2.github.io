@@ -43,9 +43,9 @@
     {% if latest_question_list %}
         {% for question in latest_question_list %}
             <div class="response" data-entry-id="{{ question.id }}" data-creation-date="{{ question.pub_date|date:'Y-m-d H:i' }}">
-                <div 
-                        class="question-text" data-entry-id="{{ question.id }}" data-response-text="{{ question.response_text }}">{{ question.question_text }}
-                </div>
+                    <div 
+                            class="question-text" data-entry-id="{{ question.id }}" data-response-text="{{ question.response_text }}">{{ question.question_text }}
+                    </div>
     
                     <!-- Link question texts to their actions, now only referencing unique actions -->
                     <div class="actions">
