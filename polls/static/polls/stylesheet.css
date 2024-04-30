@@ -12,8 +12,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 400vh;
-  width: 400vw;
+  height: 200vh;
+  width: 200vw;
     background-image: 
         linear-gradient(to right, rgba(128, 128, 128, 0.2) 0.5px, transparent 1px),
         linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 0.5px, transparent 1px);
@@ -38,8 +38,8 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 400vw;
-  height: 400vh;
+  width: 200vw;
+  height: 200vh;
   z-index: 1;
 }
 
@@ -81,7 +81,7 @@ a:hover {
   font-family: "lores-21-serif", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   background-color: black;
   margin: 10px;
@@ -113,7 +113,7 @@ a:hover {
   font-family: "lores-21-serif", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   background-color: black;
   margin: 5px;
@@ -213,12 +213,12 @@ a:hover {
   color: white;
   font-family: "lores-21-serif", sans-serif;
   text-align: left; 
-  margin: 20px; 
+  margin: 20px;
   display: inline-block; 
   width: auto; 
   position: fixed;
-  bottom: 0;
-  right: 0;
+  top: 0;
+  left: 150px;
   line-height: 20px;
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(2,5px);
@@ -308,6 +308,7 @@ textarea {
   width: auto; 
   position: fixed;
   top: 0;
+  right: 100px;
   line-height: 20px;
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(2px);

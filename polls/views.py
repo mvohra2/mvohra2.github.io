@@ -3,6 +3,7 @@ from django.views import generic
 from django.utils import timezone
 from .models import Question
 from .api import process_response_text
+from django.urls import reverse
 action_list = []
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -27,17 +28,21 @@ def submit_question(request):
                 pub_date=timezone.now()
             )
 
-            return redirect('polls:index')
+            return redirect(f"{reverse('polls:index')}?latest_id={question.id}")
+        
 
 
 from collections import defaultdict
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')
+    latest_id = request.GET.get('latest_id', None)
 
     context = {
-        'latest_question_list': latest_question_list
+        'latest_question_list': latest_question_list,
+        'latest_id': latest_id
     }
     return render(request, 'polls/index.html', context)
+
 
 

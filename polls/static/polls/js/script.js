@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const questionNameDiv = responseDiv.querySelector('.question-text');
         if (questionNameDiv) {
             questionNameDiv.style.position = "absolute";
-            questionNameDiv.style.left = Math.random() * (window.innerWidth*4 - questionNameDiv.offsetWidth) + 'px';
-            questionNameDiv.style.top = Math.random() * (window.innerHeight*4 - questionNameDiv.offsetHeight) + 'px';
+            questionNameDiv.style.left = Math.random() * (window.innerWidth*2 - questionNameDiv.offsetWidth) + 'px';
+            questionNameDiv.style.top = Math.random() * (window.innerHeight*2 - questionNameDiv.offsetHeight) + 'px';
 
             makeDraggable(questionNameDiv);
             applyFloatingAnimation(questionNameDiv);
@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const divY = centerY + radius * Math.sin(angle) - div.offsetHeight / 2;
 
         div.style.position = "absolute";
-        div.style.left = Math.max(0, Math.min(window.innerWidth*4 - div.offsetWidth, divX)) + 'px';
-        div.style.top = Math.max(0, Math.min(window.innerHeight*4 - div.offsetHeight, divY)) + 'px';
+        div.style.left = Math.max(0, Math.min(window.innerWidth*2 - div.offsetWidth, divX)) + 'px';
+        div.style.top = Math.max(0, Math.min(window.innerHeight*2 - div.offsetHeight, divY)) + 'px';
 
         makeDraggable(div);
         applyFloatingAnimation(div);
@@ -110,8 +110,8 @@ function makeDraggable(element) {
             updateLinePositions(element);
 
             // Ensure the position does not exceed the viewport
-            element.style.left = Math.max(0, Math.min(window.innerWidth*4 - element.offsetWidth, newPosLeft)) + 'px';
-            element.style.top = Math.max(0, Math.min(window.innerHeight*4 - element.offsetHeight, newPosTop)) + 'px';
+            element.style.left = Math.max(0, Math.min(window.innerWidth*2 - element.offsetWidth, newPosLeft)) + 'px';
+            element.style.top = Math.max(0, Math.min(window.innerHeight*2 - element.offsetHeight, newPosTop)) + 'px';
         }
 
         document.addEventListener('mousemove', elementDrag);
@@ -423,6 +423,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
+// Loading state after submitting
+
+document.getElementById('dreamForm').addEventListener('submit', function(event) {
+    var submitButton = document.getElementById('submit');
+    submitButton.disabled = true;  // Disable the button to prevent multiple clicks
+    submitButton.innerText = 'Recording...';
+});
+
+// Navigate to latest div when reloading the page
+
+function scrollToElement(element) {
+    const elementRect = element.getBoundingClientRect();
+    const absoluteElementTop = elementRect.top + window.pageYOffset;
+    const absoluteElementLeft = elementRect.left + window.pageXOffset;
+    const middleX = absoluteElementLeft - (window.innerWidth / 2) + (elementRect.width / 2);
+    const middleY = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+    window.scrollTo({
+        top: middleY,
+        left: middleX,
+        behavior: 'smooth'
+    });
+}
+
+window.onload = function() {
+    var latestElement = document.querySelector('.response[data-entry-id="{{ latest_id }}"]');
+    if (latestElement) {
+        scrollToElement(latestElement);
+    }
+};
+
+// Mouse and navigation movements
 
 document.addEventListener('mousemove', function(e) {
     let windowWidth = window.innerWidth;
