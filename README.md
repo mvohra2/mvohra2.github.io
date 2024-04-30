@@ -1,6 +1,5 @@
 # mvohra2.github.io
 
-<<<<<<< Updated upstream
 ## Activate Env
 
 pyenv activate dreams
@@ -16,9 +15,3 @@ git push
 git add . 
 git commit -m "insert commit message"
 git push heroku main
-=======
-
-Activate Virtual Environment
-
-pyenv activate dreams
->>>>>>> Stashed changes
